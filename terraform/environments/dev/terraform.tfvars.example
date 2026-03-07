@@ -1,0 +1,6 @@
+project_id   = "your-gcp-project-id"
+region       = "asia-northeast2"
+service_name = "gcp-tutorial-service"
+github_owner = "your-github-username"
+github_repo  = "gcp-tutorial"
+db_password  = "change-me-to-a-strong-password"
