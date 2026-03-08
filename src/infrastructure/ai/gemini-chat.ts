@@ -15,7 +15,7 @@ ${context.join("\n\n---\n\n")}
       : "You are a helpful assistant. Answer questions clearly and concisely.";
 
   return streamText({
-    model: google("gemini-2.0-flash"),
+    model: google("gemini-2.5-flash"),
     system: systemPrompt,
     messages,
   });

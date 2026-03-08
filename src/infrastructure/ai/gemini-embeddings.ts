@@ -1,19 +1,20 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+import { google } from "@ai-sdk/google";
+import { embed, embedMany } from "ai";
 
 export async function generateEmbedding(text: string): Promise<number[]> {
-  const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
-  const result = await model.embedContent(text);
-  return result.embedding.values;
+  const { embedding } = await embed({
+    model: google.textEmbeddingModel("gemini-embedding-001"),
+    value: text,
+  });
+  return embedding;
 }
 
 export async function generateEmbeddings(
   texts: string[]
 ): Promise<number[][]> {
-  const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
-  const results = await Promise.all(
-    texts.map((text) => model.embedContent(text))
-  );
-  return results.map((r) => r.embedding.values);
+  const { embeddings } = await embedMany({
+    model: google.textEmbeddingModel("gemini-embedding-001"),
+    values: texts,
+  });
+  return embeddings;
 }
