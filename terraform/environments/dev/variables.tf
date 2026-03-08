@@ -22,3 +22,16 @@ variable "db_password" {
   type      = string
   sensitive = true
 }
+
+variable "gemini_api_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "firebase_api_key" {
+  type = string
+}
+
+variable "firebase_app_id" {
+  type = string
+}

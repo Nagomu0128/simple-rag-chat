@@ -40,6 +40,14 @@ resource "google_cloud_run_v2_service" "this" {
           }
         }
       }
+
+      dynamic "volume_mounts" {
+        for_each = var.cloud_sql_connection_name != null ? [1] : []
+        content {
+          name       = "cloudsql"
+          mount_path = "/cloudsql"
+        }
+      }
     }
 
     dynamic "volumes" {

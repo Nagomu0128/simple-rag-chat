@@ -57,9 +57,10 @@ module "secret_manager" {
   source = "../../modules/secret_manager"
 
   region     = var.region
-  secret_ids = ["db-password-dev"]
+  secret_ids = ["db-password-dev", "gemini-api-key-dev"]
   secret_data = {
-    db-password-dev = var.db_password
+    db-password-dev    = var.db_password
+    gemini-api-key-dev = var.gemini_api_key
   }
 
   depends_on = [google_project_service.apis]
@@ -105,7 +106,7 @@ module "cloud_run" {
   min_instances         = 0
   max_instances         = 1
   cpu                   = "1"
-  memory                = "128Mi"
+  memory                = "512Mi"
   cpu_allocation        = "request"
   allow_unauthenticated = true
   service_account_email = module.iam.cloud_run_sa_email
@@ -113,14 +114,22 @@ module "cloud_run" {
   cloud_sql_connection_name = module.cloud_sql.connection_name
 
   env_vars = {
-    DB_HOST     = "/cloudsql/${module.cloud_sql.connection_name}"
-    DB_NAME     = module.cloud_sql.database_name
-    DB_USER     = "app"
-    BUCKET_NAME = module.cloud_storage.bucket_name
+    DB_HOST                                = "/cloudsql/${module.cloud_sql.connection_name}"
+    DB_NAME                                = module.cloud_sql.database_name
+    DB_USER                                = "app"
+    BUCKET_NAME                            = module.cloud_storage.bucket_name
+    NEXT_PUBLIC_FIREBASE_API_KEY           = var.firebase_api_key
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN       = "${var.project_id}.firebaseapp.com"
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID        = var.project_id
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET    = "${var.project_id}.firebasestorage.app"
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = var.project_number
+    NEXT_PUBLIC_FIREBASE_APP_ID            = var.firebase_app_id
+    FIREBASE_ADMIN_CLIENT_EMAIL            = module.iam.cloud_run_sa_email
   }
 
   secret_env_vars = {
-    DB_PASSWORD = "db-password-dev"
+    DB_PASSWORD    = "db-password-dev"
+    GEMINI_API_KEY = "gemini-api-key-dev"
   }
 
   depends_on = [
