@@ -1,0 +1,6 @@
+# TypeScriptを集計から除外
+*.ts linguist-detectable=false
+*.tsx linguist-detectable=false
+
+# Terraformを強制的に検出対象にする
+*.tf linguist-detectable=true
