@@ -1,7 +1,7 @@
 import { conversationRepository, messageRepository, documentChunkRepository } from "@/src/infrastructure/container";
 import { retrieveRelevantChunks } from "@/src/infrastructure/ai/retriever";
 import { createChatStream } from "@/src/infrastructure/ai/gemini-chat";
-import type { CoreMessage } from "ai";
+import type { ModelMessage } from "ai";
 
 export async function sendMessage(
   conversationId: string,
@@ -34,7 +34,7 @@ export async function sendMessage(
 
   // Build message history
   const history = await messageRepository.findByConversationId(conversationId);
-  const messages: CoreMessage[] = history.map((m) => ({
+  const messages: ModelMessage[] = history.map((m) => ({
     role: m.role as "user" | "assistant",
     content: m.content,
   }));

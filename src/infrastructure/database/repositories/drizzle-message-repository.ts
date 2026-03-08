@@ -6,11 +6,12 @@ import type { MessageRepository } from "@/src/domain/message/repository";
 
 export class DrizzleMessageRepository implements MessageRepository {
   async findByConversationId(conversationId: string): Promise<Message[]> {
-    return db
+    const rows = await db
       .select()
       .from(messages)
       .where(eq(messages.conversationId, conversationId))
       .orderBy(asc(messages.createdAt));
+    return rows as Message[];
   }
 
   async create(data: {
