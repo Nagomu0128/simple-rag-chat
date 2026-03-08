@@ -95,7 +95,7 @@ export function DocumentUpload({ onUpload }: DocumentUploadProps) {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".txt,.md,.csv"
+              accept=".txt,.md,.csv,.pdf"
               onChange={handleUpload}
               className="hidden"
               id="doc-upload"

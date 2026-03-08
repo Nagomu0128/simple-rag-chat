@@ -25,7 +25,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  const content = await file.text();
+  let content: string;
+  if (file.name.endsWith(".pdf")) {
+    const pdfModule = await import("pdf-parse");
+    const pdfParse = pdfModule.default ?? pdfModule;
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const pdf = await pdfParse(buffer);
+    content = pdf.text;
+  } else {
+    content = await file.text();
+  }
+
   const doc = await uploadDocument(user.id, file.name, content);
   return NextResponse.json({ document: doc });
 }
