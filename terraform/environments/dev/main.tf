@@ -103,9 +103,9 @@ module "cloud_run" {
   service_name          = "${var.service_name}-dev"
   region                = var.region
   min_instances         = 0
-  max_instances         = 2
+  max_instances         = 1
   cpu                   = "1"
-  memory                = "512Mi"
+  memory                = "128Mi"
   allow_unauthenticated = true
   service_account_email = module.iam.cloud_run_sa_email
 
