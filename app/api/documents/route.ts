@@ -27,11 +27,10 @@ export async function POST(req: NextRequest) {
 
   let content: string;
   if (file.name.endsWith(".pdf")) {
-    const pdfModule = await import("pdf-parse");
-    const pdfParse = pdfModule.default ?? pdfModule;
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const pdf = await pdfParse(buffer);
-    content = pdf.text;
+    const { extractText } = await import("unpdf");
+    const buffer = new Uint8Array(await file.arrayBuffer());
+    const result = await extractText(buffer);
+    content = typeof result.text === "string" ? result.text : result.text.join("\n");
   } else {
     content = await file.text();
   }

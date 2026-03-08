@@ -55,7 +55,7 @@ export function ChatMessages({
   }
 
   return (
-    <ScrollArea className="flex-1">
+    <div className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-3xl space-y-6 p-4">
         {messages.map((msg) => (
           <MessageBubble key={msg.id} role={msg.role} content={msg.content} />
@@ -65,7 +65,7 @@ export function ChatMessages({
         )}
         <div ref={bottomRef} />
       </div>
-    </ScrollArea>
+    </div>
   );
 }
 
